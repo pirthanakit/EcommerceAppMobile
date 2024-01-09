@@ -55,15 +55,15 @@ class TProductMetaData extends StatelessWidget {
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
         /// Title
-        const TProductTitleText(title: 'hp'),
+        const TProductTitleText(title: 'Asus'),
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
         /// Stock Status
         Row(
           children: [
-            const TProductTitleText(title: 'hp'),
+            const TProductTitleText(title: 'สถานะ :'),
             const SizedBox(width: TSizes.spaceBtwItems),
-            Text('In Stock', style: Theme.of(context).textTheme.titleMedium),
+            Text('มีสินค้า', style: Theme.of(context).textTheme.titleMedium),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
