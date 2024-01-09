@@ -7,9 +7,11 @@ import 'package:APPE/utils/constants/colors.dart';
 import 'package:APPE/utils/constants/image_strings.dart';
 import 'package:APPE/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/list_tiles/user_profile_tile.dart';
+import '../profile/profile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -24,6 +26,7 @@ class SettingsScreen extends StatelessWidget {
             TPrimaryHeaderContainer(
               child: Column(
                 children: [
+                  /// AppBar
                   TAppBar(
                     title: Text(
                       'Account',
@@ -34,7 +37,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
 
                   /// -- User Profile Card
-                  TUserProfileTile(),
+                  TUserProfileTile(
+                      onPressed: () => Get.to(() => const ProfileScreen())),
                   const SizedBox(height: TSizes.spaceBtwItems),
                 ],
               ),

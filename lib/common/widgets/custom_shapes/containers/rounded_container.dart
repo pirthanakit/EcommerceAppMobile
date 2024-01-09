@@ -4,17 +4,18 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 
 class TRoundedContainer extends StatelessWidget {
-  const TRoundedContainer(
-      {super.key,
-      this.width,
-      this.height,
-      this.radius = TSizes.cardRadiusLg,
-      this.child,
-      this.showBorder = false,
-      this.borderColor = TColors.borderPrimary,
-      this.backgroundColor = TColors.white,
-      this.padding,
-      this.margin});
+  const TRoundedContainer({
+    super.key,
+    this.width,
+    this.height,
+    this.radius = TSizes.cardRadiusLg,
+    this.child,
+    this.showBorder = false,
+    this.borderColor = TColors.borderPrimary,
+    this.backgroundColor = TColors.white,
+    this.padding,
+    this.margin,
+  });
 
   final double? width;
   final double? height;
