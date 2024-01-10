@@ -36,7 +36,7 @@ class TBrandCard extends StatelessWidget {
             Flexible(
               child: TCircularImage(
                 isNetworkImage: false,
-                image: TImages.acerlogo,
+                image: TImages.delllogo,
                 backgroundColor: Colors.transparent,
                 overlayColor: isDark ? TColors.white : TColors.black,
               ),
@@ -52,7 +52,7 @@ class TBrandCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const TBrandTitleWithVerifiendIcon(
-                    title: 'Acer',
+                    title: 'DELL',
                     brandTextSizes: TextSizes.large,
                   ),
                   Text(
