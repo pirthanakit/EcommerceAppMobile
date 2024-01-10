@@ -4,15 +4,25 @@
     {
       "type": "flutter",
       "command": "flutter",
-      "args": ["pub", "get"],
+      "args": [
+        "pub",
+        "get"
+      ],
       "problemMatcher": [],
       "label": "flutter: flutter pub get",
-      "detail": ""
+      "detail": "",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "type": "flutter",
       "command": "flutter",
-      "args": ["pub", "upgrade"],
+      "args": [
+        "pub",
+        "upgrade"
+      ],
       "problemMatcher": [],
       "label": "flutter: flutter pub upgrade",
       "detail": ""
