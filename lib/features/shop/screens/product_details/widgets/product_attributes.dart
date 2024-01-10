@@ -35,7 +35,7 @@ class TProductAttributes extends StatelessWidget {
                       Row(
                         children: [
                           const TProductTitleText(
-                              title: 'ราคา :', smallSize: true),
+                              title: 'ราคา: ', smallSize: true),
 
                           /// Actual Price
                           Text(
@@ -56,7 +56,7 @@ class TProductAttributes extends StatelessWidget {
                       Row(
                         children: [
                           const TProductTitleText(
-                              title: 'คลังสินค้า :', smallSize: true),
+                              title: 'คลังสินค้า: ', smallSize: true),
                           Text('มีสินค้า',
                               style: Theme.of(context).textTheme.titleMedium),
                         ],
