@@ -18,8 +18,8 @@ class THomeCategories extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, index) {
             return TVerticalImagesText(
-              image: TImages.acerlogo,
-              title: 'ACER',
+              image: TImages.delllogo,
+              title: 'DELL',
               onTap: () {},
             );
           }),
