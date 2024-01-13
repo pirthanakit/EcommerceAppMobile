@@ -3,6 +3,7 @@ import 'package:APPE/common/widgets/custom_shapes/containers/primary_header_cont
 import 'package:APPE/common/widgets/images/t_circular_image.dart';
 import 'package:APPE/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:APPE/common/widgets/texts/section_heading.dart';
+import 'package:APPE/features/personalizetion/screens/address/address.dart';
 import 'package:APPE/utils/constants/colors.dart';
 import 'package:APPE/utils/constants/image_strings.dart';
 import 'package:APPE/utils/constants/sizes.dart';
@@ -46,41 +47,43 @@ class SettingsScreen extends StatelessWidget {
 
             /// -- Body
             Padding(
-              padding: EdgeInsets.all(TSizes.defaultSpace),
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: Column(
                 children: [
                   /// -- Account settings
-                  TSectionHeading(
+                  const TSectionHeading(
                     title: 'Account Settings',
                     showActionButton: false,
                   ),
-                  SizedBox(height: TSizes.spaceBtwItems),
+                  const SizedBox(height: TSizes.spaceBtwItems),
 
                   TSettingsMenuTile(
-                      icon: Iconsax.safe_home,
-                      title: 'My Addresses',
-                      subTite: 'Set Shopping delivery address'),
-                  TSettingsMenuTile(
+                    icon: Iconsax.safe_home,
+                    title: 'My Addresses',
+                    subTite: 'Set Shopping delivery address',
+                    onTap: () => Get.to(() => const UserAddressScreen()),
+                  ),
+                  const TSettingsMenuTile(
                       icon: Iconsax.shopping_cart,
                       title: 'My Cart',
                       subTite: 'Add, remove products and move to checkout'),
-                  TSettingsMenuTile(
+                  const TSettingsMenuTile(
                       icon: Iconsax.bag_tick,
                       title: 'My Orders',
                       subTite: 'In-progress and Completed Orders'),
-                  TSettingsMenuTile(
+                  const TSettingsMenuTile(
                       icon: Iconsax.bank,
                       title: 'Bank Account',
                       subTite: 'Withdraw balance to registered bank account'),
-                  TSettingsMenuTile(
+                  const TSettingsMenuTile(
                       icon: Iconsax.discount_shape,
                       title: 'My Coupons',
                       subTite: 'List of all the discounred coupons'),
-                  TSettingsMenuTile(
+                  const TSettingsMenuTile(
                       icon: Iconsax.notification,
                       title: 'Notifications',
                       subTite: 'Set any kind of notifications message'),
-                  TSettingsMenuTile(
+                  const TSettingsMenuTile(
                       icon: Iconsax.security_card,
                       title: 'Account Privacy',
                       subTite: 'Manage data usage and connected accounts'),

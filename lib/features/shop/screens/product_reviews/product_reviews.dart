@@ -1,9 +1,11 @@
 import 'package:APPE/common/widgets/appbar/appbar.dart';
 import 'package:APPE/features/shop/screens/product_reviews/widgets/progress_indicator_and_rating.dart';
 import 'package:APPE/features/shop/screens/product_reviews/widgets/rating_progress_indicator.dart';
+import 'package:APPE/features/shop/screens/product_reviews/widgets/user_review_card.dart';
 import 'package:APPE/utils/constants/colors.dart';
 import 'package:APPE/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -33,7 +35,15 @@ class ProductReviewsScreen extends StatelessWidget {
 
               /// Overall Product Ratings
               const TOverallProductRating(),
-              const RatingBarIndicator(rating: 3.5),
+              const TRatingBarIndicator(rating: 3.5),
+              Text('12,611', style: Theme.of(context).textTheme.bodySmall),
+              const SizedBox(height: TSizes.spaceBtwSections),
+
+              /// User Reviews List
+              const UserReviewCard(),
+              const UserReviewCard(),
+              const UserReviewCard(),
+              const UserReviewCard(),
             ],
           ),
         ),
