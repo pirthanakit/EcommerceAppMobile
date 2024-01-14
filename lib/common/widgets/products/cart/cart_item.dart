@@ -22,7 +22,7 @@ class TCartItem extends StatelessWidget {
           imageUrl: TImages.productImage1,
           width: 60,
           height: 60,
-          padding: EdgeInsets.all(TSizes.sm),
+          padding: const EdgeInsets.all(TSizes.sm),
           backgroundColor: THelperFunctions.isDarkMode(context)
               ? TColors.darkerGrey
               : TColors.light,
@@ -30,33 +30,38 @@ class TCartItem extends StatelessWidget {
         const SizedBox(width: TSizes.spaceBtwItems),
 
         /// Title Price, & Size
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TBrandTitleWithVerifiendIcon(title: 'Asus'),
-            const Flexible(
-              child: const TProductTitleText(
-                  title: 'Black Sports shoes', maxLines: 1),
-            ),
-
-            /// Attributes
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                      text: 'สี', style: Theme.of(context).textTheme.bodySmall),
-                  TextSpan(
-                      text: 'ดำ', style: Theme.of(context).textTheme.bodyLarge),
-                  TextSpan(
-                      text: 'ขนาด',
-                      style: Theme.of(context).textTheme.bodySmall),
-                  TextSpan(
-                      text: 'นิ้ว 22',
-                      style: Theme.of(context).textTheme.bodyLarge),
-                ],
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TBrandTitleWithVerifiendIcon(title: 'Asus'),
+              const Flexible(
+                child: const TProductTitleText(
+                    title: 'black computer', maxLines: 1),
               ),
-            ),
-          ],
+
+              /// Attributes
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                        text: 'สี: ',
+                        style: Theme.of(context).textTheme.bodySmall),
+                    TextSpan(
+                        text: 'ดำ',
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    TextSpan(
+                        text: 'ขนาด: ',
+                        style: Theme.of(context).textTheme.bodySmall),
+                    TextSpan(
+                        text: 'นิ้ว 22',
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  ],
+                ),
+              ),
+            ],
+          ),
         )
       ],
     );
