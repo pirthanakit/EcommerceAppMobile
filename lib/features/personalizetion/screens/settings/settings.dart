@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/list_tiles/user_profile_tile.dart';
+import '../../../shop/screens/cart/cart.dart';
 import '../profile/profile.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class SettingsScreen extends StatelessWidget {
                   /// AppBar
                   TAppBar(
                     title: Text(
-                      'Account',
+                      'บัญชีผู้ใช้',
                       style: Theme.of(context).textTheme.headlineMedium!.apply(
                             color: TColors.white,
                           ),
@@ -53,68 +54,69 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   /// -- Account settings
                   const TSectionHeading(
-                    title: 'Account Settings',
+                    title: 'การตั้งค่าบัญชี',
                     showActionButton: false,
                   ),
                   const SizedBox(height: TSizes.spaceBtwItems),
 
                   TSettingsMenuTile(
                     icon: Iconsax.safe_home,
-                    title: 'My Addresses',
+                    title: 'ที่อยู่ของฉัน',
                     subTite: 'Set Shopping delivery address',
                     onTap: () => Get.to(() => const UserAddressScreen()),
                   ),
-                  const TSettingsMenuTile(
-                      icon: Iconsax.shopping_cart,
-                      title: 'My Cart',
-                      subTite: 'Add, remove products and move to checkout'),
+                  TSettingsMenuTile(
+                    icon: Iconsax.shopping_cart,
+                    title: 'ตะกร้า',
+                    subTite: 'Add, remove products and move to checkout',
+                    onTap: () => Get.to(() => const CartScreen()),
+                  ),
                   TSettingsMenuTile(
                     icon: Iconsax.bag_tick,
-                    title: 'My Orders',
+                    title: 'คำสั่งซื้อ',
                     subTite: 'In-progress and Completed Orders',
                     onTap: () => Get.to(() => const OrderScreen()),
                   ),
                   const TSettingsMenuTile(
                       icon: Iconsax.bank,
-                      title: 'Bank Account',
+                      title: 'บัญชีธนาคาร',
                       subTite: 'Withdraw balance to registered bank account'),
                   const TSettingsMenuTile(
                       icon: Iconsax.discount_shape,
-                      title: 'My Coupons',
+                      title: 'คูปองของฉัน',
                       subTite: 'List of all the discounred coupons'),
                   const TSettingsMenuTile(
                       icon: Iconsax.notification,
-                      title: 'Notifications',
+                      title: 'การแจ้งเตือน',
                       subTite: 'Set any kind of notifications message'),
                   const TSettingsMenuTile(
                       icon: Iconsax.security_card,
-                      title: 'Account Privacy',
+                      title: 'ความเป็นส่วนตัวของบัญชี',
                       subTite: 'Manage data usage and connected accounts'),
 
                   /// -- App Settings
                   SizedBox(height: TSizes.spaceBtwSections),
-                  TSectionHeading(
-                      title: 'App Settings', showActionButton: false),
+                  TSectionHeading(title: 'การตั้งค่า', showActionButton: false),
                   SizedBox(height: TSizes.spaceBtwItems),
                   TSettingsMenuTile(
                       icon: Iconsax.document_upload,
-                      title: 'Load Data',
+                      title: 'โหลดข้อมูล',
                       subTite: 'Upload Data to your Cloud Firebase'),
                   TSettingsMenuTile(
                     icon: Iconsax.location,
-                    title: 'Geolcation',
+                    title: 'ตำแหน่งทางภูมิศาสตร์',
                     subTite: 'Set recommendation based on location',
                     trailing: Switch(value: true, onChanged: (value) {}),
                   ),
                   TSettingsMenuTile(
                     icon: Iconsax.security_user,
-                    title: 'Safe Mode',
+                    title: 'โหมดปลอดภัย',
                     subTite: 'Search rasult is safe for all ages',
                     trailing: Switch(value: true, onChanged: (value) {}),
                   ),
                   TSettingsMenuTile(
                     icon: Iconsax.image,
-                    title: 'HD Image Quality',
+                    title: 'คุณภาพของภาพระดับ HD',
                     subTite: 'Set image quality to be seen',
                     trailing: Switch(value: true, onChanged: (value) {}),
                   ),

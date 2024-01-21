@@ -1,5 +1,7 @@
 import 'package:APPE/common/widgets/products/product_cards/product_card_vertical.dart';
+import 'package:APPE/features/shop/screens/all_products/all_products.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/primary_header_container.dart';
 import '../../../../common/widgets/custom_shapes/containers/search_container.dart';
@@ -70,31 +72,27 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // ----- Promo Slider ------
-                  const TPromoSlider(
-                    banners: [
-                      TImages.promoBanner3,
-                      TImages.promoBanner2,
-                      TImages.promoBanner1
-                    ],
-                  ),
+                  const TPromoSlider(banners: [
+                    TImages.promoBanner3,
+                    TImages.promoBanner2,
+                    TImages.promoBanner1
+                  ]),
                   const SizedBox(
                     height: TSizes.spaceBtwSections,
                   ),
 
                   // ----- Heading
                   TSectionHeading(
-                    title: 'Popular Categories',
-                    onPressed: () {},
-                  ),
+                      title: 'Popular Categories',
+                      onPressed: () => Get.to(() => const AllProducts())),
                   const SizedBox(
                     height: TSizes.spaceBtwItems,
                   ),
 
                   // ----- Popular Product ------
                   TGridLayout(
-                    itemCount: 4,
-                    itemBuilder: (_, index) => const TProductCardVertical(),
-                  ),
+                      itemCount: 4,
+                      itemBuilder: (_, index) => const TProductCardVertical()),
                 ],
               ),
             ),
