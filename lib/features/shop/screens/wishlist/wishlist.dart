@@ -27,8 +27,14 @@ class FavouriteScreen extends StatelessWidget {
         padding: EdgeInsets.all(TSizes.defaultSpace),
         child: Column(children: [
           TGridLayout(
-              itemCount: 6,
-              itemBuilder: (_, index) => const TProductCardVertical())
+            itemCount: products.length,
+            itemBuilder: (_, index) => TProductCardVertical(
+              imageUrl: products[index]['imageUrl']!,
+              title: products[index]['title']!,
+              brand: products[index]['brand']!,
+              price: products[index]['price']!,
+            ),
+          ),
         ]),
       )),
     );

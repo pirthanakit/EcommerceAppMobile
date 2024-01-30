@@ -7,24 +7,34 @@ import '../../../../../utils/constants/image_strings.dart';
 import '../../sub_category/sub_categories.dart';
 
 class THomeCategories extends StatelessWidget {
+
   const THomeCategories({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 80,
       child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: 6,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, index) {
-            return TVerticalImagesText(
-                image: TImages.shoeIcon,
-                title: 'Shoes',
-                onTap: () => Get.to(() => SubCategoriesScreen()));
-          }),
+        shrinkWrap: true,
+        itemCount: categories.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (_, index) {
+          final category = categories[index];
+          return TVerticalImagesText(
+            image: category['image']!,
+            title: category['title']!,
+            onTap: () => Get.to(() => SubCategoriesScreen()),
+          );
+        },
+      ),
     );
   }
 }
+
+List<Map<String, String>> categories = [
+  {'image': TImages.acerlogo, 'title': 'ACER'},
+  {'image': TImages.asuslogo, 'title': 'ASUS'},
+  // เพิ่มหมวดหมู่เพิ่มเติมตามต้องการ
+];

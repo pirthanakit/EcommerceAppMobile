@@ -1,8 +1,12 @@
+
+import 'package:APPE/bindings/general_bindings.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:APPE/features/authentication/screens/login/login.dart';
-import 'package:APPE/utils/constants/text_strings.dart';
-import 'package:APPE/utils/theme/theme.dart';
+import 'package:get/get.dart';
+
+import 'features/authentication/screens/login/login.dart';
+import 'utils/constants/colors.dart';
+import 'utils/constants/text_strings.dart';
+import 'utils/theme/theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -15,8 +19,9 @@ class App extends StatelessWidget {
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      // initialBinding: GeneralBindings(),
+      initialBinding: GeneralBindings(),
       home: const LoginScreen(),
+      // home: const Scaffold(backgroundColor: TColors.primary, body: Center(child: CircularProgressIndicator(color: Colors.white,),),),
     );
   }
 }

@@ -8,46 +8,20 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
-
-void registerUser(String firstName, String lastName, String username,
-    String email, String phoneNo, String password) async {
-  final url = Uri.parse('http://10.37.16.144:5000/api/register');
-  final response = await http.post(
-    url,
-    body: {
-      "firstName": firstName,
-      "lastName": lastName,
-      "username": username,
-      "email": email,
-      "phoneNo": phoneNo,
-      "password": password,
-    },
-  );
-
-  if (response.statusCode == 201) {
-    // User registered successfully
-    print('User registered successfully!');
-  } else {
-    // Registration failed
-    print('Registration failed. Error: ${response.body}');
-  }
-}
+import '../../../../../utils/validators/validation.dart';
+import '../../../controllers/signup/signup_controller.dart';
 
 class TSignupForm extends StatelessWidget {
-  TSignupForm({
+  const TSignupForm({
     super.key,
   });
 
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNoController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SignupController());
     return Form(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      key: controller.signupFormKey,
       child: Column(
         children: [
           // First & Last Name
@@ -55,6 +29,9 @@ class TSignupForm extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  validator: (value) =>
+                      TValidator.validateEmptyText('First Name', value),
+                  controller: controller.firstName,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: TTexts.firstName,
@@ -65,6 +42,9 @@ class TSignupForm extends StatelessWidget {
               const SizedBox(width: TSizes.spaceBtwInputFields),
               Expanded(
                 child: TextFormField(
+                  validator: (value) =>
+                      TValidator.validateEmptyText('Last Name', value),
+                  controller: controller.lastName,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: TTexts.lastName,
@@ -81,7 +61,9 @@ class TSignupForm extends StatelessWidget {
 
           // Username
           TextFormField(
-            controller: usernameController,
+            validator: (value) =>
+                TValidator.validateEmptyText('Username', value),
+            controller: controller.username,
             expands: false,
             decoration: const InputDecoration(
               labelText: TTexts.username,
@@ -92,6 +74,8 @@ class TSignupForm extends StatelessWidget {
 
           // Email
           TextFormField(
+            validator: (value) => TValidator.validateEmail(value),
+            controller: controller.email,
             decoration: const InputDecoration(
               labelText: TTexts.email,
               prefixIcon: Icon(Iconsax.direct),
@@ -101,6 +85,8 @@ class TSignupForm extends StatelessWidget {
 
           // Phone Number
           TextFormField(
+            validator: (value) => TValidator.validatePhoneNumber(value),
+            controller: controller.phoneNumber,
             decoration: const InputDecoration(
               labelText: TTexts.phoneNo,
               prefixIcon: Icon(Iconsax.call),
@@ -109,13 +95,22 @@ class TSignupForm extends StatelessWidget {
           const SizedBox(height: TSizes.spaceBtwInputFields),
 
           // Password
-          TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              labelText: TTexts.password,
-              prefixIcon: Icon(Iconsax.password_check),
-              suffixIcon: Icon(Iconsax.eye_slash),
+          Obx(
+            () => TextFormField(
+              validator: (value) => TValidator.validatePassword(value),
+              controller: controller.password,
+              obscureText: controller.hidePassword.value,
+              decoration: InputDecoration(
+                labelText: TTexts.password,
+                prefixIcon: const Icon(Iconsax.password_check),
+                suffixIcon: IconButton(
+                  onPressed: () => controller.hidePassword.value =
+                      !controller.hidePassword.value,
+                  icon: Icon(controller.hidePassword.value
+                      ? Iconsax.eye_slash
+                      : Iconsax.eye),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: TSizes.spaceBtwInputFields),
@@ -129,18 +124,37 @@ class TSignupForm extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                registerUser(
-                  firstNameController.text,
-                  lastNameController.text,
-                  usernameController.text,
-                  emailController.text,
-                  phoneNoController.text,
-                  passwordController.text,
+              onPressed: () async {
+                // เตรียมข้อมูลที่จะส่งไปยังฐานข้อมูล
+                Map<String, dynamic> userData = {
+                  'firstname': controller.firstName.text,
+                  'lastname': controller.lastName.text,
+                  'username': controller.username.text,
+                  'email': controller.email.text,
+                  'phone': controller.phoneNumber.text,
+                  'password': controller.password.text,
+                };
+
+                // ทำการส่ง HTTP POST request
+                var response = await http.post(
+                  Uri.parse('http://10.37.0.206/flutter_data/register.php'),
+                  body: userData,
                 );
+
+                // ตรวจสอบว่าการส่งข้อมูลสำเร็จหรือไม่
+                if (response.statusCode == 200) {
+                  // ถ้าสำเร็จ, ทำตามลำดับของคุณ
+                  print('Registration successful!');
+                  // นำผู้ใช้ไปยังหน้า VerifyEmailScreen หรือทำอย่างอื่นตามที่คุณต้องการ
+                  // Get.to(() => const VerifyEmailScreen());
+                } else {
+                  // ถ้าไม่สำเร็จ, แสดงข้อความผิดพลาด
+                  print('Error: ${response.reasonPhrase}');
+                }
               },
               child: const Text(TTexts.createAccount),
             ),
+
             // child: ElevatedButton(
             //   onPressed: () => Get.to(() => const VerifyEmailScreen()),
             //   child: const Text(TTexts.createAccount),
@@ -159,13 +173,19 @@ class TTermsAndConditionCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = SignupController.instance;
     final dark = THelperFunctions.isDarkMode(context);
     return Row(
       children: [
         SizedBox(
             width: 24,
             height: 24,
-            child: Checkbox(value: true, onChanged: (value) {})),
+            child: Obx(
+              () => Checkbox(
+                  value: controller.privacyPolicy.value,
+                  onChanged: (value) => controller.privacyPolicy.value =
+                      !controller.privacyPolicy.value),
+            )),
         const SizedBox(
           width: TSizes.spaceBtwItems,
         ),

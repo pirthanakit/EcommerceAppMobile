@@ -16,7 +16,19 @@ import '../../icons/t_circular_icon.dart';
 import '../../texts/product_price_text.dart';
 
 class TProductCardVertical extends StatelessWidget {
-  const TProductCardVertical({super.key});
+  final String imageUrl;
+  final String title;
+  final String brand;
+  final String price;
+
+  const TProductCardVertical({
+    Key? key,
+    required this.imageUrl,
+    required this.title,
+    required this.brand,
+    required this.price,
+  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +54,8 @@ class TProductCardVertical extends StatelessWidget {
               child: Stack(
                 children: [
                   // -- Thumbnail Image --
-                  const TRoundedImage(
-                    imageUrl: TImages.productImage47,
+                  TRoundedImage(
+                    imageUrl: imageUrl,
                     applyImageRadius: true,
                   ),
 
@@ -56,7 +68,7 @@ class TProductCardVertical extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: TSizes.sm, vertical: TSizes.xs),
                       child: Text(
-                        '25%',
+                        '25%', // You can customize this tag as well
                         style: Theme.of(context)
                             .textTheme
                             .labelLarge!
@@ -67,12 +79,13 @@ class TProductCardVertical extends StatelessWidget {
 
                   // Favorite Icon Button
                   const Positioned(
-                      top: 0,
-                      right: 0,
-                      child: TCircularIcon(
-                        icon: Iconsax.heart5,
-                        color: Colors.red,
-                      )),
+                    top: 0,
+                    right: 0,
+                    child: TCircularIcon(
+                      icon: Iconsax.heart5,
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -80,17 +93,17 @@ class TProductCardVertical extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwItems / 2),
 
             // ---- Details -----
-            const Padding(
-              padding: EdgeInsets.only(left: TSizes.sm),
+            Padding(
+              padding: const EdgeInsets.only(left: TSizes.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TProductTitleText(
-                    title: 'Notebook Gameming',
+                    title: title,
                     smallSize: true,
                   ),
                   SizedBox(height: TSizes.spaceBtwItems / 2),
-                  TBrandTitleWithVerifiendIcon(title: 'Acer'),
+                  TBrandTitleWithVerifiendIcon(title: brand),
                 ],
               ),
             ),
@@ -105,7 +118,7 @@ class TProductCardVertical extends StatelessWidget {
                 // -- Price
                 Padding(
                   padding: const EdgeInsets.only(left: TSizes.sm),
-                  child: const TProductPriceText(price: '19,900'),
+                  child: TProductPriceText(price: price),
                 ),
 
                 // -- Add to cart

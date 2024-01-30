@@ -1,9 +1,11 @@
 import 'package:APPE/features/authentication/screens/password_configuration/forget_password.dart';
 import 'package:APPE/navigation_menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:APPE/features/authentication/screens/signup/signup.dart';
 
@@ -84,7 +86,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                         // forget password
                         TextButton(
-                            onPressed: () => Get.to(() => const ForgetPassword()),
+                            onPressed: () =>
+                                Get.to(() => const ForgetPassword()),
                             child: const Text(TTexts.forgetPassword)),
                       ],
                     ),
@@ -94,15 +97,21 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                            onPressed: () => Get.to(() => const NavigationMenu()), child: Text(TTexts.signIn))),
+                            onPressed: () =>
+                                Get.to(() => const NavigationMenu()),
+                            child: Text(TTexts.signIn))),
 
                     const SizedBox(height: TSizes.spaceBtwItems),
                     //create acc
                     SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton(
-                            onPressed: () => Get.to(() => const SignupScreen()),
-                            child: Text(TTexts.createAccount))),
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Get.to(() => const SignupScreen());
+                        },
+                        child: Text(TTexts.createAccount),
+                      ),
+                    ),
                   ],
                 ),
               ),
