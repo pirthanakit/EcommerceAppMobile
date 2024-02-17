@@ -1,20 +1,57 @@
-import 'package:APPE/common/widgets/products/product_cards/product_card_vertical.dart';
-import 'package:APPE/features/shop/screens/all_products/all_products.dart';
+import 'dart:convert';
+import 'package:APPE/features/shop/screens/brand/all_brands.dart';
+import 'package:APPE/features/shop/screens/home/widgets/home_appbar.dart';
+import 'package:APPE/features/shop/screens/home/widgets/home_categories.dart';
+import 'package:APPE/features/shop/screens/home/widgets/promo_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../../common/widgets/custom_shapes/containers/primary_header_container.dart';
 import '../../../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../../../common/widgets/layouts/grid_layout.dart';
+import '../../../../common/widgets/products/product_cards/product_card_vertical.dart';
 import '../../../../common/widgets/texts/section_heading.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
-import 'widgets/home_appbar.dart';
-import 'widgets/home_categories.dart';
-import 'widgets/promo_slider.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+// ... โค้ดอื่น ๆ ที่มีอยู่
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<dynamic> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://192.168.21.150:3000/products'));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> fetchedProducts =
+            List<dynamic>.from(json.decode(response.body));
+
+        setState(() {
+          products = fetchedProducts;
+        });
+      } else {
+        print('การโหลดข้อมูลล้มเหลว. รหัสสถานะ: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('ข้อผิดพลาดในการดึงข้อมูล: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,83 +59,79 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header --
+            // Header
             TPrimaryHeaderContainer(
               child: Column(
                 children: [
-                  // -- Appbar --
+                  // Appbar
                   THomeAppBar(),
-                  SizedBox(
-                    height: TSizes.spaceBtwSections,
-                  ),
+                  SizedBox(height: TSizes.spaceBtwSections),
 
-                  // -- Searchbar --
-                  TSearchContainer(
-                    text: 'Search in Store',
-                  ),
-                  SizedBox(
-                    height: TSizes.spaceBtwSections,
-                  ),
+                  // Searchbar
+                  TSearchContainer(text: 'Search in Store'),
+                  SizedBox(height: TSizes.spaceBtwSections),
 
-                  // -- Categories --
+                  // Categories
                   Padding(
                     padding: EdgeInsets.only(left: TSizes.defaultSpace),
                     child: Column(
                       children: [
-                        // -- Heading --
+                        // Heading
                         TSectionHeading(
                           title: 'Popular Categories',
                           showActionButton: false,
                           textColor: Colors.white,
                         ),
-                        SizedBox(
-                          height: TSizes.spaceBtwItems,
-                        ),
+                        SizedBox(height: TSizes.spaceBtwItems),
 
-                        // -- Categories --
+                        // Categories
                         THomeCategories(),
                       ],
                     ),
                   ),
 
                   SizedBox(height: TSizes.spaceBtwSections),
+
+                  // GridView
+                  if (products
+                      .isNotEmpty) // สร้าง GridView เฉพาะเมื่อมีผลิตภัณฑ์
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, index) => TProductCardVertical(
+                        imageUrl: products[index]['imageUrl'] ?? '',
+                        title: products[index]['product_name'] ?? '',
+                        brand: products[index]['brand'] ?? '',
+                        price: products[index]['price'].toString(),
+                      ),
+                    ),
                 ],
               ),
             ),
 
-            // -- Body --
+            // Body
             Padding(
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: Column(
                 children: [
-                  // ----- Promo Slider ------
+                  // Promo Slider
                   const TPromoSlider(banners: [
                     TImages.promoBanner1,
                     TImages.promoBanner2,
                     TImages.promoBanner3,
                   ]),
-                  const SizedBox(
-                    height: TSizes.spaceBtwSections,
-                  ),
+                  const SizedBox(height: TSizes.spaceBtwSections),
 
-                  // ----- Heading
+                  // Heading
                   TSectionHeading(
-                      title: 'Popular Categories',
-                      onPressed: () => Get.to(() => const AllProducts())),
-                  const SizedBox(
-                    height: TSizes.spaceBtwItems,
+                    title: 'Popular Categories',
+                    onPressed: () => Get.to(() => AllBrandsScreen()),
                   ),
-
-                  // ----- Popular Product ------
-                  TGridLayout(
-                    itemCount: products.length,
-                    itemBuilder: (_, index) => TProductCardVertical(
-                      imageUrl: products[index]['imageUrl']!,
-                      title: products[index]['title']!,
-                      brand: products[index]['brand']!,
-                      price: products[index]['price']!,
-                    ),
-                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems),
                 ],
               ),
             ),
@@ -108,31 +141,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-// สร้าง list ของข้อมูลสินค้า
-List<Map<String, String>> products = [
-  {
-    'imageUrl': TImages.productImage47,
-    'title': 'Notebook Gameming',
-    'brand': 'Acer',
-    'price': '19,900',
-  },
-  {
-    'imageUrl': TImages.productImage48,
-    'title': 'New Laptop 1',
-    'brand': 'Brand XYZ',
-    'price': '25,000',
-  },
-  {
-    'imageUrl': TImages.productImage49,
-    'title': 'New Laptop 2',
-    'brand': 'Brand ABC',
-    'price': '30,000',
-  },
-  {
-    'imageUrl': TImages.productImage50,
-    'title': 'New Laptop 3',
-    'brand': 'Brand DEF',
-    'price': '22,500',
-  },
-];

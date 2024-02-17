@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../../common/widgets/products/sortable/sortable_products.dart';
+
 class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({super.key});
 
@@ -29,10 +31,10 @@ class FavouriteScreen extends StatelessWidget {
           TGridLayout(
             itemCount: products.length,
             itemBuilder: (_, index) => TProductCardVertical(
-              imageUrl: products[index]['imageUrl']!,
-              title: products[index]['title']!,
-              brand: products[index]['brand']!,
-              price: products[index]['price']!,
+              imageUrl: products[index]['imageUrl'] ?? '',
+              title: products[index]['product_name'] ?? '',
+              brand: products[index]['brand'] ?? '',
+              price: products[index]['price'] ?? '',
             ),
           ),
         ]),
