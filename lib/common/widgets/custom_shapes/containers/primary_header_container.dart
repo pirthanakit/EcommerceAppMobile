@@ -5,9 +5,10 @@ import '../curved_edges/cerved_edges_widget.dart';
 import 'circular_container.dart';
 
 class TPrimaryHeaderContainer extends StatelessWidget {
-  const TPrimaryHeaderContainer({
+  final List<dynamic> userData;
+  TPrimaryHeaderContainer({
     super.key,
-    required this.child,
+    required this.child, required this.userData,
   });
 
   final Widget child;

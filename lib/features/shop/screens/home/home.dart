@@ -7,27 +7,83 @@ import '../../../../common/widgets/custom_shapes/containers/primary_header_conta
 import '../../../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../../../common/widgets/layouts/grid_layout.dart';
 import '../../../../common/widgets/texts/section_heading.dart';
+import '../../../../controllers/api.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_categories.dart';
 import 'widgets/promo_slider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  final List<dynamic> userData;
+  HomeScreen({Key? key, required this.userData}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, dynamic>> products = [];
+  List<String> banners = [];
+
+  Future<void> fetchProducts() async {
+    final response = await http.get(Uri.parse(API.apiproducts));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      setState(() {
+        products = responseData.cast<Map<String, dynamic>>();
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to load products'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    fetchProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String> productIdToUserId = {};
+    for (var userData in widget.userData) {
+      String productId = userData['product_id'].toString();
+      String userId = userData['user_id'].toString();
+      productIdToUserId[productId] = userId;
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Header --
             TPrimaryHeaderContainer(
+              userData: [],
               child: Column(
                 children: [
                   // -- Appbar --
-                  THomeAppBar(),
+                  THomeAppBar(
+                    userData: [],
+                  ),
                   SizedBox(
                     height: TSizes.spaceBtwSections,
                   ),
@@ -72,33 +128,52 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // ----- Promo Slider ------
-                  const TPromoSlider(banners: [
-                    TImages.promoBanner1,
-                    TImages.promoBanner2,
-                    TImages.promoBanner3,
-                  ]),
+                  TPromoSlider(
+                    banners: [
+                      'http://192.168.77.14/flutter_data/banners/469.jpg',
+                      'http://192.168.77.14/flutter_data/banners/470_0.jpg',
+                      'http://192.168.77.14/flutter_data/banners/471_0.jpg',
+                      'http://192.168.77.14/flutter_data/banners/472_0.jpg',
+                    ],
+                  ),
+
                   const SizedBox(
                     height: TSizes.spaceBtwSections,
                   ),
 
                   // ----- Heading
                   TSectionHeading(
-                      title: 'Popular Categories',
-                      onPressed: () => Get.to(() => const AllProducts())),
+                    title: 'Popular Categories',
+                    onPressed: () => Get.to(() => AllProducts(
+                          userData: [],
+                        )),
+                  ),
                   const SizedBox(
                     height: TSizes.spaceBtwItems,
                   ),
 
                   // ----- Popular Product ------
-                  TGridLayout(
-                    itemCount: products.length,
-                    itemBuilder: (_, index) => TProductCardVertical(
-                      imageUrl: products[index]['imageUrl']!,
-                      title: products[index]['title']!,
-                      brand: products[index]['brand']!,
-                      price: products[index]['price']!,
+                  if (products.isNotEmpty)
+                    TGridLayout(
+                      itemCount: products.length,
+                      itemBuilder: (_, index) {
+                        final product = products[index];
+                        final productId = product['product_id'].toString();
+                        final userId = productIdToUserId[productId] ?? '';
+
+                        return TProductCardVertical(
+                          imageUrl:
+                              'http://192.168.77.14/flutter_data/${product['image']}',
+                          title: product['product_name'],
+                          brand: product['brand'],
+                          price: product['price'].toString(),
+                          productId: productId,
+                          amount: product['amount'].toString(),
+                          userId: userId,
+                          userData: widget.userData, // ส่ง userData ไปยัง TProductCardVertical
+                        );
+                      },
                     ),
-                  ),
                 ],
               ),
             ),
@@ -108,31 +183,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-// สร้าง list ของข้อมูลสินค้า
-List<Map<String, String>> products = [
-  {
-    'imageUrl': TImages.productImage47,
-    'title': 'Notebook Gameming',
-    'brand': 'Acer',
-    'price': '19,900',
-  },
-  {
-    'imageUrl': TImages.productImage48,
-    'title': 'New Laptop 1',
-    'brand': 'Brand XYZ',
-    'price': '25,000',
-  },
-  {
-    'imageUrl': TImages.productImage49,
-    'title': 'New Laptop 2',
-    'brand': 'Brand ABC',
-    'price': '30,000',
-  },
-  {
-    'imageUrl': TImages.productImage50,
-    'title': 'New Laptop 3',
-    'brand': 'Brand DEF',
-    'price': '22,500',
-  },
-];

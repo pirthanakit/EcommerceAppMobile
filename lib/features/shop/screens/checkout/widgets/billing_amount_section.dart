@@ -14,7 +14,7 @@ class TBillingAmountSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Subtotal', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\฿12,000', style: Theme.of(context).textTheme.bodyMedium),
+            Text('\฿650', style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2),
@@ -35,7 +35,7 @@ class TBillingAmountSection extends StatelessWidget {
           children: [
             Text('ค่าธรรมเนียมภาษี',
                 style: Theme.of(context).textTheme.bodyMedium),
-            Text('\฿100', style: Theme.of(context).textTheme.labelLarge),
+            Text('\฿20', style: Theme.of(context).textTheme.labelLarge),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2),
@@ -46,7 +46,7 @@ class TBillingAmountSection extends StatelessWidget {
           children: [
             Text('ยอดรวมทั้งหมด',
                 style: Theme.of(context).textTheme.bodyMedium),
-            Text('\฿???', style: Theme.of(context).textTheme.titleMedium),
+            Text('\฿700', style: Theme.of(context).textTheme.titleMedium),
           ],
         ),
       ],

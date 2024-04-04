@@ -18,7 +18,8 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+  final List<dynamic> userData;
+   CartScreen({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: () => Get.to(() => const CheckoutScreen()),
+          onPressed: () => Get.to(() => CheckoutScreen(userData: userData,)),
           child: Text('สั่งซื้อ'),
         ),
       ),

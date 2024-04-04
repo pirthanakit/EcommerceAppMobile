@@ -9,7 +9,8 @@ import '../../../utils/helpers/helper_functions.dart';
 import '../custom_shapes/containers/rounded_container.dart';
 
 class TBrandShowcase extends StatelessWidget {
-  const TBrandShowcase({
+
+  TBrandShowcase({
     super.key,
     required this.images,
   });
@@ -27,7 +28,7 @@ class TBrandShowcase extends StatelessWidget {
       child: Column(
         children: [
           /// Brand with Products Count
-          const TBrandCard(showBorder: false),
+          TBrandCard(showBorder: false, typeName: '',),
           const SizedBox(height: TSizes.spaceBtwItems),
 
           /// Brand Top 3 Product Images

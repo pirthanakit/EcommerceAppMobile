@@ -8,35 +8,66 @@ import 'package:APPE/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../../../../controllers/api.dart';
+
 class AllBrandsScreen extends StatelessWidget {
-  const AllBrandsScreen({super.key});
+  AllBrandsScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TAppBar(title: Text('Brand'), showBackArrow: true),
+      appBar: const TAppBar(title: Text('Type'), showBackArrow: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
               /// Heading
-              const TSectionHeading(title: 'Brands', showActionButton: false),
+              TSectionHeading(title: 'Type', showActionButton: false),
               const SizedBox(height: TSizes.spaceBtwItems),
 
               /// -- Brands
-              TGridLayout(
-                itemCount: 10,
-                mainAxisExtent: 80,
-                itemBuilder: (context, index) => TBrandCard(
-                  showBorder: true,
-                  onTap: () => Get.to(() => const BrandProducts()),
-                ),
+              FutureBuilder<List<String>>(
+                future: fetchTypes(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<String> typeNames = snapshot.data!;
+                    return TGridLayout(
+                      itemCount: typeNames.length,
+                      mainAxisExtent: 80,
+                      itemBuilder: (context, index) => TBrandCard(
+                        showBorder: true,
+                        onTap: () => Get.to(() => BrandProducts()),
+                        typeName: typeNames[index],
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<List<String>> fetchTypes() async {
+    final response = await http.get(Uri.parse(API.apitype));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      final List<String> typeNames =
+          responseData.map((type) => type['type_name'] as String).toList();
+      return typeNames;
+    } else {
+      throw Exception('Failed to load types');
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:APPE/common/widgets/images/t_circular_image.dart';
 import 'package:APPE/common/widgets/texts/product_price_text.dart';
 import 'package:APPE/common/widgets/texts/product_title_text.dart';
@@ -5,21 +6,27 @@ import 'package:APPE/common/widgets/texts/t_brand_title_text_with_verified_icon.
 import 'package:APPE/utils/constants/enums.dart';
 import 'package:APPE/utils/constants/image_strings.dart';
 import 'package:APPE/utils/helpers/helper_functions.dart';
-import 'package:flutter/material.dart';
+import 'package:APPE/utils/constants/sizes.dart';
+import 'package:APPE/utils/constants/colors.dart';
 
 import '../../../../../common/widgets/custom_shapes/containers/rounded_container.dart';
-import '../../../../../utils/constants/colors.dart';
-import '../../../../../utils/constants/sizes.dart';
 
 class TProductMetaData extends StatelessWidget {
+  final String price;
   const TProductMetaData({
-    super.key,
+    Key? key,
+    required this.price,
   });
 
   @override
   Widget build(BuildContext context) {
     final darkMode = THelperFunctions.isDarkMode(context);
     var devices;
+    
+    final double originalPrice = double.parse(price);
+    final double increasedPrice = originalPrice * 1.25; // เพิ่มราคา 25%
+    final String formattedIncreasedPrice = increasedPrice.toStringAsFixed(2); // รูปแบบราคาเพิ่มขึ้นให้มีทศนิยม 2 ตำแหน่ง
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,19 +50,19 @@ class TProductMetaData extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwItems),
 
             /// Price
-            Text('\฿15,900',
+            Text('\฿$formattedIncreasedPrice',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
                     .apply(decoration: TextDecoration.lineThrough)),
             const SizedBox(width: TSizes.spaceBtwItems),
-            const TProductPriceText(price: '11,250', isLarge: true),
+            TProductPriceText(price: price, isLarge: true), // แสดงราคาที่เพิ่มขึ้น 25%
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
         /// Title
-        const TProductTitleText(title: 'Asus'),
+        // const TProductTitleText(title: 'RAM'),
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
         /// Stock Status
@@ -69,18 +76,18 @@ class TProductMetaData extends StatelessWidget {
         const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
         /// Brand
-        Row(
-          children: [
-            TCircularImage(
-              image: TImages.computer,
-              width: 32,
-              height: 32,
-              overlayColor: darkMode ? TColors.white : TColors.black,
-            ),
-            const TBrandTitleWithVerifiendIcon(
-                title: 'Asus', brandTextSizes: TextSizes.medium),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     TCircularImage(
+        //       image: TImages.computer,
+        //       width: 32,
+        //       height: 32,
+        //       overlayColor: darkMode ? TColors.white : TColors.black,
+        //     ),
+        //     const TBrandTitleWithVerifiendIcon(
+        //         title: 'RAM', brandTextSizes: TextSizes.medium),
+        //   ],
+        // ),
       ],
     );
   }

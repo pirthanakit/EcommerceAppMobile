@@ -6,8 +6,9 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/text_strings.dart';
 
 class THomeAppBar extends StatelessWidget {
-  const THomeAppBar({
-    super.key,
+  final List<dynamic> userData;
+  THomeAppBar({
+    super.key, required this.userData,
   });
 
   @override
@@ -37,7 +38,7 @@ class THomeAppBar extends StatelessWidget {
           onPressed: () {},
           iconColor: TColors.white,
           counterBgColor: TColors.black,
-          counterTextColor: TColors.white,
+          counterTextColor: TColors.white, userData: userData,
         ),
       ],
     );

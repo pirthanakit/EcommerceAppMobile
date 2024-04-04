@@ -14,19 +14,23 @@ import 'package:get/get.dart';
 
 import '../../../../common/widgets/brands/brand_card.dart';
 import '../../../../common/widgets/images/t_circular_image.dart';
+import '../../../../controllers/api.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_functions.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class StoreScreen extends StatelessWidget {
-  const StoreScreen({super.key});
+  StoreScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 9,
       child: Scaffold(
         appBar: TAppBar(
           title: Text(
@@ -36,7 +40,7 @@ class StoreScreen extends StatelessWidget {
           actions: [
             TCartCounterIcon(
               onPressed: () {},
-              iconColor: Colors.white,
+              iconColor: const Color.fromARGB(255, 0, 0, 0), userData: [],
             ),
           ],
         ),
@@ -79,25 +83,43 @@ class StoreScreen extends StatelessWidget {
                         height: TSizes.spaceBtwItems / 1.5,
                       ),
 
-                      TGridLayout(
-                        itemCount: 4,
-                        mainAxisExtent: 80,
-                        itemBuilder: (_, index) {
-                          return TBrandCard(
-                            showBorder: false,
-                          );
+                      FutureBuilder<List<String>>(
+                        future: fetchTypes(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            List<String> typeNames = snapshot.data!;
+                            return TGridLayout(
+                              itemCount: typeNames.length,
+                              mainAxisExtent: 80,
+                              itemBuilder: (_, index) {
+                                return TBrandCard(
+                                  showBorder: false,
+                                  typeName: typeNames[index],
+                                );
+                              },
+                            );
+                          }
                         },
                       ),
                     ],
                   ),
                 ),
-                bottom: const TTabBar(
+                bottom: TTabBar(
                   tabs: [
-                    Tab(child: Text('Computer')),
-                    Tab(child: Text('Notebook')),
-                    Tab(child: Text('Graphics Card')),
+                    Tab(child: Text('All')),
+                    Tab(child: Text('CPU')),
                     Tab(child: Text('RAM')),
-                    Tab(child: Text('Equipment')),
+                    Tab(child: Text('Notebook')),
+                    Tab(child: Text('HDD')),
+                    Tab(child: Text('Power Supply')),
+                    Tab(child: Text('Monitor')),
+                    Tab(child: Text('Mainboard')),
+                    Tab(child: Text('Graphic Card')),
                   ],
                 ),
               ),
@@ -105,15 +127,32 @@ class StoreScreen extends StatelessWidget {
           },
           body: TabBarView(
             children: [
-              TCategorTab(),
-              TCategorTab(),
-              TCategorTab(),
-              TCategorTab(),
-              TCategorTab()
+              TCategorTab(typeId: 0, userData: [],), // All
+              TCategorTab(typeId: 1, userData: [],), // CPU
+              TCategorTab(typeId: 2, userData: [],), // RAM
+              TCategorTab(typeId: 3, userData: [],), // Notebook
+              TCategorTab(typeId: 4, userData: [],), // HDD
+              TCategorTab(typeId: 5, userData: [],), // Power Supply
+              TCategorTab(typeId: 6, userData: [],), // Monitor
+              TCategorTab(typeId: 7, userData: [],), // Mainboard
+              TCategorTab(typeId: 8, userData: [],), // Graphic Card
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<List<String>> fetchTypes() async {
+    final response = await http.get(Uri.parse(API.apitype));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      final List<String> typeNames =
+          responseData.map((type) => type['type_name'] as String).toList();
+      return typeNames;
+    } else {
+      throw Exception('Failed to load types');
+    }
   }
 }

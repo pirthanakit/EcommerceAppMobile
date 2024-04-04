@@ -6,9 +6,11 @@ import '../../../utils/constants/image_strings.dart';
 import '../images/t_circular_image.dart';
 
 class TUserProfileTile extends StatelessWidget {
-  const TUserProfileTile({
-    super.key,
+  final List<dynamic> userData;
+  TUserProfileTile({
+    Key?key,
     required this.onPressed,
+    required this.userData,
   });
 
   final VoidCallback onPressed;
@@ -22,14 +24,18 @@ class TUserProfileTile extends StatelessWidget {
           height: 50,
           padding: 0,
         ),
-        title: Text('Pharadon P',
-            style: Theme.of(context).textTheme.headlineSmall!.apply(
-                  color: TColors.white,
-                )),
-        subtitle: Text('peetparadon@gmail.com',
-            style: Theme.of(context).textTheme.bodyMedium!.apply(
-                  color: TColors.white,
-                )),
+        title: Text(
+          'Username: ${userData[0]['username']}',
+          style: Theme.of(context).textTheme.headlineSmall!.apply(
+                color: TColors.white,
+              ),
+        ),
+        subtitle: Text(
+          'Email: ${userData[0]['email']}',
+          style: Theme.of(context).textTheme.bodyMedium!.apply(
+                color: TColors.white,
+              ),
+        ),
         trailing: IconButton(
           onPressed: onPressed,
           icon: const Icon(

@@ -8,8 +8,9 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../common/widgets/products/sortable/sortable_products.dart';
 
 class AllProducts extends StatelessWidget {
-  const AllProducts({
-    super.key,
+  final List<dynamic> userData;
+  AllProducts({
+    super.key, required this.userData,
   });
 
   @override
@@ -20,7 +21,7 @@ class AllProducts extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding:  EdgeInsets.all(TSizes.defaultSpace),
-          child: TSortableProducts(),
+          child: TSortableProducts(userData: [],),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TSectionHeading extends StatelessWidget {
-  const TSectionHeading({
+   TSectionHeading({
     super.key,
     this.onPressed,
     this.textColor,

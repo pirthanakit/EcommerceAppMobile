@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_functions.dart';
 import '../../images/t_rounded_image.dart';
 import '../../texts/product_title_text.dart';
 import '../../texts/t_brand_title_text_with_verified_icon.dart';
 
+import 'package:flutter/material.dart';
+
 class TCartItem extends StatelessWidget {
-  const TCartItem({
-    super.key,
-  });
+  final String imageUrl;
+  final String product;
+  final int quantity;
+
+  TCartItem({
+    Key? key,
+    required this.imageUrl, required this.quantity, required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class TCartItem extends StatelessWidget {
       children: [
         /// Image
         TRoundedImage(
-          imageUrl: TImages.productImage1,
+          imageUrl: imageUrl, // ใช้ imageUrl ที่รับเข้ามา
           width: 60,
           height: 60,
           padding: const EdgeInsets.all(TSizes.sm),
@@ -35,10 +41,10 @@ class TCartItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TBrandTitleWithVerifiendIcon(title: 'Asus'),
-              const Flexible(
-                child: const TProductTitleText(
-                    title: 'black computer', maxLines: 1),
+              const TBrandTitleWithVerifiendIcon(title: 'PRODUCT'),
+              Flexible(
+                child: TProductTitleText(
+                    title: '$product', maxLines: 1),
               ),
 
               /// Attributes
@@ -46,16 +52,10 @@ class TCartItem extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                        text: 'สี: ',
+                        text: 'จำนวน : ',
                         style: Theme.of(context).textTheme.bodySmall),
                     TextSpan(
-                        text: 'ดำ',
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    TextSpan(
-                        text: 'ขนาด: ',
-                        style: Theme.of(context).textTheme.bodySmall),
-                    TextSpan(
-                        text: 'นิ้ว 22',
+                        text: '$quantity',
                         style: Theme.of(context).textTheme.bodyLarge),
                   ],
                 ),

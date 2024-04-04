@@ -1,6 +1,7 @@
 import 'package:APPE/common/widgets/images/t_rounded_image.dart';
 import 'package:APPE/common/widgets/texts/product_title_text.dart';
 import 'package:APPE/common/widgets/texts/t_brand_title_text_with_verified_icon.dart';
+import 'package:APPE/controllers/api.dart';
 import 'package:APPE/features/shop/screens/product_details/product_detail.dart';
 import 'package:APPE/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -20,22 +21,40 @@ class TProductCardVertical extends StatelessWidget {
   final String title;
   final String brand;
   final String price;
+  final String productId;
+  final String amount;
+  final String userId;
+  final List<dynamic> userData;
 
-  const TProductCardVertical({
+  TProductCardVertical({
     Key? key,
     required this.imageUrl,
     required this.title,
     required this.brand,
     required this.price,
-  }) : super(key: key);
-
+    required this.productId,
+    required this.amount,
+    required this.userId, required this.userData,
+  }) : super(key: key) {
+    // print(userData);
+    // print(productId);
+  }
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
 
     return GestureDetector(
-      onTap: () => Get.to(() => const ProductDetailScreen()),
+      onTap: () async => Get.to(
+        ProductDetailScreen(
+          imageUrl: imageUrl, // ใช้ imageUrl ที่รับเข้ามา
+          price: price,
+          productId: productId,
+          amount: amount,
+          userId: userId,
+          userData: userData,
+        ),
+      ),
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),

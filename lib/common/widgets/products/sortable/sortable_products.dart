@@ -1,15 +1,59 @@
+import 'package:APPE/controllers/api.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../layouts/grid_layout.dart';
 import '../product_cards/product_card_vertical.dart';
 
-class TSortableProducts extends StatelessWidget {
-  const TSortableProducts({
-    super.key,
-  });
+class TSortableProducts extends StatefulWidget {
+  final List<dynamic> userData;
+  const TSortableProducts({Key? key, required this.userData}) : super(key: key);
+
+  @override
+  _TSortableProductsState createState() => _TSortableProductsState();
+}
+
+class _TSortableProductsState extends State<TSortableProducts> {
+  List<dynamic> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  Future<void> fetchProducts() async {
+    final response = await http.get(Uri.parse(API.apiproducts));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      setState(() {
+        products = responseData.cast<Map<String, dynamic>>();
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to load products'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,42 +80,24 @@ class TSortableProducts extends StatelessWidget {
         /// Products
         TGridLayout(
           itemCount: products.length,
-          itemBuilder: (_, index) => TProductCardVertical(
-            imageUrl: products[index]['imageUrl']!,
-            title: products[index]['title']!,
-            brand: products[index]['brand']!,
-            price: products[index]['price']!,
-          ),
+          itemBuilder: (_, index) {
+            final product = products[index];
+            final userId = index < widget.userData.length
+                ? widget.userData[index]['user_id'].toString()
+                : '';
+            return TProductCardVertical(
+              imageUrl: 'http://192.168.77.14/flutter_data/${product['image']}',
+              title: product['product_name'],
+              brand: product['brand'],
+              price: product['price'].toString(),
+              productId: product['productId'].toString(),
+              amount: product['amount'].toString(),
+              userId: userId,
+              userData: widget.userData
+            );
+          },
         ),
       ],
     );
   }
 }
-
-// สร้าง list ของข้อมูลสินค้า
-List<Map<String, String>> products = [
-  {
-    'imageUrl': TImages.productImage47,
-    'title': 'Notebook Gameming',
-    'brand': 'Acer',
-    'price': '19,900',
-  },
-  {
-    'imageUrl': TImages.productImage48,
-    'title': 'New Laptop 1',
-    'brand': 'Brand XYZ',
-    'price': '25,000',
-  },
-  {
-    'imageUrl': TImages.productImage49,
-    'title': 'New Laptop 2',
-    'brand': 'Brand ABC',
-    'price': '30,000',
-  },
-  {
-    'imageUrl': TImages.productImage50,
-    'title': 'New Laptop 3',
-    'brand': 'Brand DEF',
-    'price': '22,500',
-  },
-];

@@ -10,10 +10,13 @@ import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
 
-class TProductlmageSlider extends StatelessWidget {
-  const TProductlmageSlider({
-    super.key,
-  });
+class TProductImageSlider extends StatelessWidget {
+  final String imageUrl; // เพิ่มพารามิเตอร์ imageUrl
+
+  const TProductImageSlider({
+    Key? key,
+    required this.imageUrl, // กำหนดให้รับค่า imageUrl เมื่อสร้าง TProductImageSlider
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,33 +32,33 @@ class TProductlmageSlider extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(TSizes.productImageRadius * 2),
                 child: Center(
-                    child: Image(image: AssetImage(TImages.productImage1))),
+                    child: Image.network(imageUrl)), // ใช้ imageUrl ที่รับเข้ามา
               ),
             ),
 
             /// Image Slider
-            Positioned(
-              right: 0,
-              bottom: 30,
-              left: TSizes.defaultSpace,
-              child: SizedBox(
-                height: 80,
-                child: ListView.separated(
-                  separatorBuilder: (_, __) =>
-                      const SizedBox(width: TSizes.spaceBtwItems),
-                  itemCount: 6,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, index) => TRoundedImage(
-                    width: 80,
-                    backgroundColor: dark ? TColors.dark : TColors.white,
-                    border: Border.all(color: TColors.primary),
-                    padding: const EdgeInsets.all(TSizes.sm),
-                    imageUrl: TImages.productImage3,
-                  ),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   right: 0,
+            //   bottom: 30,
+            //   left: TSizes.defaultSpace,
+            //   child: SizedBox(
+            //     height: 80,
+            //     child: ListView.separated(
+            //       separatorBuilder: (_, __) =>
+            //           const SizedBox(width: TSizes.spaceBtwItems),
+            //       itemCount: 6,
+            //       shrinkWrap: true,
+            //       scrollDirection: Axis.horizontal,
+            //       itemBuilder: (_, index) => TRoundedImage(
+            //         width: 80,
+            //         backgroundColor: dark ? TColors.dark : TColors.white,
+            //         border: Border.all(color: TColors.primary),
+            //         padding: const EdgeInsets.all(TSizes.sm),
+            //         imageUrl: imageUrl, // ใช้ imageUrl ที่รับเข้ามา
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             /// Appbar Icon
             TAppBar(

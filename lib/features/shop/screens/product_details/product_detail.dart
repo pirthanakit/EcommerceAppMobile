@@ -19,18 +19,40 @@ import 'package:iconsax/iconsax.dart';
 import 'package:readmore/readmore.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  final String imageUrl; // เพิ่มตัวแปร productImageUrl ที่นี่
+  final String price;
+  final String amount;
+  final String productId;
+  final String userId;
+  final List<dynamic> userData;
+  ProductDetailScreen(
+      {Key? key,
+      required this.imageUrl,
+      required this.price,
+      required this.productId,
+      required this.amount,
+      required this.userId, required this.userData})
+      : super(key: key) {
+    print(userData);
+    print(productId);
+  }
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
     return Scaffold(
-      bottomNavigationBar: TBottomAddToCart(),
+      bottomNavigationBar: TBottomAddToCart(
+        imageUrl: imageUrl, // ใช้ imageUrl ที่รับเข้ามา
+        price: price,
+        productId: productId,
+        userId: userId,
+        userData: userData,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             /// 1 - Product Image Slider
-            TProductlmageSlider(),
+            TProductImageSlider(imageUrl: imageUrl),
 
             /// 2 - Product Image Slider
             Padding(
@@ -44,21 +66,21 @@ class ProductDetailScreen extends StatelessWidget {
                   TRatingAndShare(),
 
                   /// - Price, Title, Stock, & Brand
-                  TProductMetaData(),
+                  TProductMetaData(price: price),
 
                   /// -- Attributes
-                  TProductAttributes(),
+                  TProductAttributes(price: price, amount: amount),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
                   /// -- Checkout Button
-                  SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () {}, child: Text('Checkout'))),
+                  // SizedBox(
+                  //     width: double.infinity,
+                  //     child: ElevatedButton(
+                  //         onPressed: () {}, child: Text('Checkout'))),
                   const SizedBox(height: TSizes.spaceBtwItems),
 
                   /// - Description
-                  const TSectionHeading(
+                  TSectionHeading(
                       title: 'รายละเอียดสินค้า', showActionButton: false),
                   const SizedBox(height: TSizes.spaceBtwItems),
                   ReadMoreText(

@@ -10,11 +10,13 @@ import 'package:iconsax/iconsax.dart';
 import 'utils/constants/colors.dart';
 
 class NavigationMenu extends StatelessWidget {
-  const NavigationMenu({super.key});
+  final List<dynamic> userData;
+
+  NavigationMenu({Key? key, required this.userData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
+    final controller = Get.put(NavigationController(userData: userData)); // สร้าง NavigationController และส่ง userData ไปยัง constructor
     final darkMode = THelperFunctions.isDarkMode(context);
 
     return Scaffold(
@@ -44,11 +46,17 @@ class NavigationMenu extends StatelessWidget {
 
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
+  final List<dynamic> userData;
 
-  final screens = [
-    const HomeScreen(),
-    const StoreScreen(),
-    const FavouriteScreen(),
-    const SettingsScreen()
-  ];
+  NavigationController({required this.userData}) {
+    // สร้าง instance ของ screens และส่ง userData ไปยังแต่ละหน้าจอ
+    screens = [
+      HomeScreen(userData: userData),
+      StoreScreen(),
+      FavouriteScreen(userData: userData),
+      SettingsScreen(userData: userData),
+    ];
+  }
+
+  late final List<Widget> screens; // ประกาศ List ของ Widget ซึ่งจะกำหนดค่าใน constructor
 }

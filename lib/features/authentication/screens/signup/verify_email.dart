@@ -19,7 +19,7 @@ class VerifyEmailScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const LoginScreen()),
+              onPressed: () => Get.offAll(() => LoginScreen()),
               icon: const Icon(CupertinoIcons.clear)),
         ],
       ),
@@ -69,7 +69,7 @@ class VerifyEmailScreen extends StatelessWidget {
                             image: TImages.staticSuccessIllustration,
                             title: TTexts.yourAccountCreatedTitle,
                             subtitle: TTexts.yourAccountCreatedSubTitle,
-                            onPressed: () => Get.to(() => const LoginScreen()),
+                            onPressed: () => Get.to(() => LoginScreen()),
                           ),
                         ),
                     child: const Text(TTexts.tContinue)),

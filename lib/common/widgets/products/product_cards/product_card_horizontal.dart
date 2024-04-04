@@ -14,8 +14,15 @@ import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_functions.dart';
 import '../../../styles/shadows.dart';
 
+import 'package:flutter/material.dart';
+
 class TPorductCardHorizontal extends StatelessWidget {
-  const TPorductCardHorizontal({super.key});
+  final Map<String, dynamic> product;
+
+  const TPorductCardHorizontal({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,9 @@ class TPorductCardHorizontal extends StatelessWidget {
                   height: 120,
                   width: 120,
                   child: TRoundedImage(
-                      imageUrl: TImages.productImage1, applyImageRadius: true),
+                    imageUrl: 'http://192.168.77.14/flutter_data/${product['image']}',
+                    applyImageRadius: true,
+                  ),
                 ),
 
                 /// -- Sale Tag
@@ -51,13 +60,11 @@ class TPorductCardHorizontal extends StatelessWidget {
                   child: TRoundedContainer(
                     radius: TSizes.sm,
                     backgroundColor: TColors.secondary.withOpacity(0.8),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: TSizes.sm, vertical: TSizes.xs),
-                    child: Text('25%',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge!
-                            .apply(color: TColors.black)),
+                    padding: const EdgeInsets.symmetric(horizontal: TSizes.sm, vertical: TSizes.xs),
+                    child: Text(
+                      '25%',
+                      style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.black),
+                    ),
                   ),
                 ),
 
@@ -101,8 +108,7 @@ class TPorductCardHorizontal extends StatelessWidget {
                           color: TColors.dark,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(TSizes.cardRadiusMd),
-                            bottomRight:
-                                Radius.circular(TSizes.productImageRadius),
+                            bottomRight: Radius.circular(TSizes.productImageRadius),
                           ),
                         ),
                         child: SizedBox(

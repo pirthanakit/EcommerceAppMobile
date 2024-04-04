@@ -10,11 +10,18 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
 
 class TProductAttributes extends StatelessWidget {
-  const TProductAttributes({super.key});
+  final String price;
+  final String amount;
+  const TProductAttributes({super.key, required this.price, required this.amount});
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
+
+    final double originalPrice = double.parse(price);
+    final double increasedPrice = originalPrice * 1.25; // เพิ่มราคา 25%
+    final String formattedIncreasedPrice = increasedPrice
+        .toStringAsFixed(2); // รูปแบบราคาเพิ่มขึ้นให้มีทศนิยม 2 ตำแหน่ง
     return Column(
       children: [
         /// -- Selected Attribute Pricing & Description
@@ -26,7 +33,7 @@ class TProductAttributes extends StatelessWidget {
               /// Title, Price and Stock Staus
               Row(
                 children: [
-                  const TSectionHeading(
+                  TSectionHeading(
                       title: 'Variation', showActionButton: false),
                   const SizedBox(width: TSizes.spaceBtwItems),
                   Column(
@@ -39,7 +46,7 @@ class TProductAttributes extends StatelessWidget {
 
                           /// Actual Price
                           Text(
-                            '\฿500',
+                            '\฿$formattedIncreasedPrice',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!
@@ -48,7 +55,7 @@ class TProductAttributes extends StatelessWidget {
                           const SizedBox(width: TSizes.spaceBtwItems),
 
                           /// Sale Price
-                          const TProductPriceText(price: '450'),
+                          TProductPriceText(price: price),
                         ],
                       ),
 
@@ -57,7 +64,7 @@ class TProductAttributes extends StatelessWidget {
                         children: [
                           const TProductTitleText(
                               title: 'คลังสินค้า: ', smallSize: true),
-                          Text('มีสินค้า',
+                          Text(amount,
                               style: Theme.of(context).textTheme.titleMedium),
                         ],
                       )
@@ -67,53 +74,51 @@ class TProductAttributes extends StatelessWidget {
               ),
 
               /// Variation Description
-              TProductTitleText(
-                title: '',
-                smallSize: true,
-                maxLines: 4,
-              ),
+              // TProductTitleText(
+              //   title: '',
+              //   smallSize: true,
+              //   maxLines: 4,
+              // ),
             ],
           ),
         ),
         const SizedBox(height: TSizes.spaceBtwItems),
 
         /// Attributes
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TSectionHeading(title: 'สี', showActionButton: false),
-            const SizedBox(height: TSizes.spaceBtwItems / 2),
-            Wrap(
-              spacing: 3,
-              children: [
-                TChoiceChip(
-                    text: 'Green', selected: false, onSelected: (value) {}),
-                TChoiceChip(
-                    text: 'Blue', selected: true, onSelected: (value) {}),
-                TChoiceChip(
-                    text: 'Yellow', selected: false, onSelected: (value) {}),
-              ],
-            )
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TSectionHeading(title: 'ขนาดจอ'),
-            const SizedBox(height: TSizes.spaceBtwItems / 2),
-            Wrap(
-              spacing: 3,
-              children: [
-                TChoiceChip(
-                    text: 'นิ้ว24', selected: true, onSelected: (value) {}),
-                TChoiceChip(
-                    text: 'นิ้ว27', selected: false, onSelected: (value) {}),
-                TChoiceChip(
-                    text: 'นิ้ว32', selected: false, onSelected: (value) {}),
-              ],
-            )
-          ],
-        ),
+        // Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     const TSectionHeading(title: 'สี', showActionButton: false),
+        //     const SizedBox(height: TSizes.spaceBtwItems / 2),
+        //     Wrap(
+        //       spacing: 2,
+        //       children: [
+        //         TChoiceChip(
+        //             text: 'Blcak', selected: false, onSelected: (value) {}),
+        //         TChoiceChip(
+        //             text: 'While', selected: false, onSelected: (value) {}),
+        //       ],
+        //     )
+        //   ],
+        // ),
+        // Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     const TSectionHeading(title: 'ขนาด'),
+        //     const SizedBox(height: TSizes.spaceBtwItems / 2),
+        //     Wrap(
+        //       spacing: 3,
+        //       children: [
+        //         TChoiceChip(
+        //             text: '8GB', selected: true, onSelected: (value) {}),
+        //         TChoiceChip(
+        //             text: '16GB(2)', selected: false, onSelected: (value) {}),
+        //         TChoiceChip(
+        //             text: '32GB(4)', selected: false, onSelected: (value) {}),
+        //       ],
+        //     )
+        //   ],
+        // ),
       ],
     );
   }

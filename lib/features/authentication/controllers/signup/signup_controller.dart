@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/api.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
@@ -13,70 +14,72 @@ class SignupController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
+  TextEditingController firstname = TextEditingController();
+  TextEditingController lastname = TextEditingController();
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController phone = TextEditingController();
   TextEditingController password = TextEditingController();
 
   /// Variables
   final hidePassword = true.obs;
   final privacyPolicy = true.obs;
 
-  get signupFormKey => null;
+  get signupFormKey => formKey;
 
   ///  -- SIGNUP
   Future<void> signup() async {
-    // Register user
-    String url = "http://10.37.0.206/flutter_data/register.php";
-
-    final response = await http.post(Uri.parse(url), body: {
-      'firstname': firstName.text,
-      'lastname': lastName.text,
-      'username': username.text,
-      'email': email.text,
-      'phone': phoneNumber.text,
-      'password': password.text,
-    });
-
-    var data = json.decode(response.body);
-    // ตรวจสอบว่าการส่งข้อมูลสำเร็จหรือไม่
-    if (response.statusCode == 200) {
-      // ถ้าสำเร็จ, ทำตามลำดับของคุณ
-      print('Registration successful!');
-      // นำผู้ใช้ไปยังหน้า VerifyEmailScreen หรือทำอย่างอื่นตามที่คุณต้องการ
-      // Get.to(() => const VerifyEmailScreen());
-    } else {
-      // ถ้าไม่สำเร็จ, แสดงข้อความผิดพลาด
-      print('Error: ${response.reasonPhrase}');
-    }
-
     try {
-      // Start Loading
-      TFullScreenLoader.openLoadingDialog(
-          'We are processing your information...', TImages.docerAnimation);
-
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) return;
 
       // Form Validation
-      // if (!signupFormKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate()) return;
 
       // Privacy Policy Check
-      // if (!privacyPolicy.value) {
-      //   TLoaders.warningSnackBar(
-      //       title: 'Accept Privacy Poloicy',
-      //       message:
-      //           'In order to create account, you must have to read and accept the Privacy Policy & Terms of Use.');
-      //   return;
-      // }
+      if (!privacyPolicy.value) {
+        TLoaders.warningSnackBar(
+          title: 'Accept Privacy Policy',
+          message: 'In order to create an account, you must read and accept the Privacy Policy & Terms of Use.',
+        );
+        return;
+      }
+
+      // Start Loading
+      TFullScreenLoader.openLoadingDialog(
+        'We are processing your information...',
+        TImages.docerAnimation,
+      );
 
       // Register user
+      String url = API.apiregister;
+      final response = await http.post(Uri.parse(url), body: {
+        'firstname': firstname.text,
+        'lastname': lastname.text,
+        'username': username.text,
+        'email': email.text,
+        'phone': phone.text,
+        'password': password.text,
+      });
+
+      // Decode response
+      var data = json.decode(response.body);
+
+      // Check if the registration is successful
+      if (response.statusCode == 200) {
+        print('Registration successful!');
+        // Navigate to the next screen
+        // Get.to(() => const VerifyEmailScreen());
+      } else {
+        // Handle error if registration fails
+        print('Error: ${response.reasonPhrase}');
+      }
     } catch (e) {
+      // Handle exceptions
       TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     } finally {
+      // Stop Loading
       TFullScreenLoader.stopLoading();
     }
   }

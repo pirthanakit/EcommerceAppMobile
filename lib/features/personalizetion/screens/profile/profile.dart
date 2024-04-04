@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final List<dynamic> userData;
+  ProfileScreen({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +53,9 @@ class ProfileScreen extends StatelessWidget {
               /// Heading Profile Info
 
               TProfileMenu(
-                  title: 'Name', value: 'Pharadon P', onPressed: () {}),
+                  title: 'Name', value: '${userData[0]['firstname']}', onPressed: () {}),
               TProfileMenu(
-                  title: 'Usernname', value: 'Pharadon 0123', onPressed: () {}),
+                  title: 'Usernname', value: '${userData[0]['username']}', onPressed: () {}),
 
               ///
               const SizedBox(height: TSizes.spaceBtwItems),
@@ -62,27 +63,27 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: TSizes.spaceBtwItems),
 
               /// Heading Personal Info
-              const TSectionHeading(
+              TSectionHeading(
                   title: 'Profile Information', showActionButton: false),
               const SizedBox(height: TSizes.spaceBtwItems),
 
               TProfileMenu(
                   title: 'User ID',
-                  value: '12456',
+                  value: '${userData[0]['user_id']}',
                   icon: Iconsax.copy,
                   onPressed: () {}),
               TProfileMenu(
                   title: 'E-mail',
-                  value: 'Pharadon@gmail.com',
+                  value: '${userData[0]['email']}',
                   onPressed: () {}),
               TProfileMenu(
                   title: 'Phone Number',
-                  value: '+66-887-642751',
+                  value: '${userData[0]['phone']}',
                   onPressed: () {}),
               TProfileMenu(title: 'Gender', value: 'Male', onPressed: () {}),
               TProfileMenu(
                   title: 'Date of Birth',
-                  value: '23 Feb, 2002',
+                  value: '12 seb, 2001',
                   onPressed: () {}),
               const Divider(),
               const SizedBox(height: TSizes.spaceBtwItems),

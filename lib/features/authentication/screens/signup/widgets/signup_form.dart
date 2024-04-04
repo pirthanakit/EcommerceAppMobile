@@ -1,13 +1,18 @@
-import 'package:APPE/features/authentication/screens/signup/verify_email.dart';
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:APPE/features/authentication/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../controllers/api.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
+import '../../../../../utils/popups/loaders.dart';
 import '../../../../../utils/validators/validation.dart';
 import '../../../controllers/signup/signup_controller.dart';
 
@@ -31,7 +36,7 @@ class TSignupForm extends StatelessWidget {
                 child: TextFormField(
                   validator: (value) =>
                       TValidator.validateEmptyText('First Name', value),
-                  controller: controller.firstName,
+                  controller: controller.firstname,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: TTexts.firstName,
@@ -44,7 +49,7 @@ class TSignupForm extends StatelessWidget {
                 child: TextFormField(
                   validator: (value) =>
                       TValidator.validateEmptyText('Last Name', value),
-                  controller: controller.lastName,
+                  controller: controller.lastname,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: TTexts.lastName,
@@ -86,7 +91,7 @@ class TSignupForm extends StatelessWidget {
           // Phone Number
           TextFormField(
             validator: (value) => TValidator.validatePhoneNumber(value),
-            controller: controller.phoneNumber,
+            controller: controller.phone,
             decoration: const InputDecoration(
               labelText: TTexts.phoneNo,
               prefixIcon: Icon(Iconsax.call),
@@ -97,7 +102,7 @@ class TSignupForm extends StatelessWidget {
           // Password
           Obx(
             () => TextFormField(
-              validator: (value) => TValidator.validatePassword(value),
+              // validator: (value) => TValidator.validatePassword(value),
               controller: controller.password,
               obscureText: controller.hidePassword.value,
               decoration: InputDecoration(
@@ -127,18 +132,22 @@ class TSignupForm extends StatelessWidget {
               onPressed: () async {
                 // เตรียมข้อมูลที่จะส่งไปยังฐานข้อมูล
                 Map<String, dynamic> userData = {
-                  'firstname': controller.firstName.text,
-                  'lastname': controller.lastName.text,
+                  'firstname': controller.firstname.text,
+                  'lastname': controller.lastname.text,
                   'username': controller.username.text,
                   'email': controller.email.text,
-                  'phone': controller.phoneNumber.text,
+                  'phone': controller.phone.text,
                   'password': controller.password.text,
                 };
 
                 // ทำการส่ง HTTP POST request
                 var response = await http.post(
-                  Uri.parse('http://10.37.0.206/flutter_data/register.php'),
-                  body: userData,
+                  Uri.parse(API.apiregister),
+                  body: jsonEncode(userData), // แปลงข้อมูลเป็น JSON ก่อนส่ง
+                  headers: {
+                    'Content-Type':
+                        'application/json', // ต้องระบุ Content-Type เป็น application/json
+                  },
                 );
 
                 // ตรวจสอบว่าการส่งข้อมูลสำเร็จหรือไม่
@@ -146,7 +155,9 @@ class TSignupForm extends StatelessWidget {
                   // ถ้าสำเร็จ, ทำตามลำดับของคุณ
                   print('Registration successful!');
                   // นำผู้ใช้ไปยังหน้า VerifyEmailScreen หรือทำอย่างอื่นตามที่คุณต้องการ
-                  // Get.to(() => const VerifyEmailScreen());
+                  TLoaders.successSnackBar(
+                      title: 'Register Success', message: e.toString());
+                  Get.to(() => LoginScreen());
                 } else {
                   // ถ้าไม่สำเร็จ, แสดงข้อความผิดพลาด
                   print('Error: ${response.reasonPhrase}');
